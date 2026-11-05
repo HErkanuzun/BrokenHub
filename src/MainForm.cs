@@ -116,7 +116,7 @@ namespace BrokenHub
         {
             var wa = Screen.FromPoint(Cursor.Position).WorkingArea;
             var frame = SizeFromClientSize(Size.Empty);
-            MinimumSize = SizeFromClientSize(new Size(P(760), P(560)));
+            MinimumSize = SizeFromClientSize(new Size(P(600), P(480)));
             ClientSize = new Size(Math.Min(P(980), wa.Width - frame.Width), Math.Min(P(720), wa.Height - frame.Height));
             try
             {
@@ -256,27 +256,39 @@ namespace BrokenHub
             ResumeLayout();
         }
 
+        // Duyarlı düzen: içerik en fazla P(980) genişlikte ve ortada; pencere içerikten uzunsa dikeyde de ortalanır.
         void DoLayout()
         {
             if (lblFoot == null) return;
-            int W = page.ClientSize.Width;
-            int pad = P(24), x = pad, w = W - pad * 2, y = pad - page.VerticalScroll.Value;
+            int W = page.ClientSize.Width, H = page.ClientSize.Height;
+            int pad = W < P(640) ? P(16) : P(28);
+            int w = Math.Min(P(980), W - pad * 2);
+            int x = (W - w) / 2;
+            int height = Place(x, 0, w);
+            bool fits = height + pad * 2 <= H;
+            Place(x, fits ? (H - height) / 2 : pad - page.VerticalScroll.Value, w);
+            page.AutoScrollMinSize = fits ? Size.Empty : new Size(0, height + pad * 2);
+            page.Invalidate();
+        }
 
+        int Place(int x, int y0, int w)
+        {
+            int y = y0;
+            bool narrow = w < P(600);
             logo.SetBounds(x, y, P(48), P(48));
             lblTitle.Location = new Point(x + P(62), y - P(1));
             lblSub.Location = new Point(x + P(64), y + P(30));
-            int bx = x + w;
-            btnAbout.SetBounds(bx - P(90), y + P(6), P(90), P(32));
-            bx -= P(90) + P(8);
-            segLang.SetBounds(bx - P(96), y + P(6), P(96), P(32));
-            y += P(70);
+            int by = narrow ? y + P(62) : y + P(6);
+            btnAbout.SetBounds(x + w - P(90), by, P(90), P(32));
+            segLang.SetBounds(x + w - P(90) - P(8) - P(96), by, P(96), P(32));
+            y = narrow ? by + P(48) : y + P(70);
 
             info.SetBounds(x, y, w, info.Measure(w));
             y = info.Bottom + P(12);
             btnRefresh.SetBounds(x, y, P(130), P(38));
             btnUpdateAll.SetBounds(x + P(140), y, P(200), P(38));
-            tglPreviews.SetBounds(x + w - P(230), y + P(4), P(230), P(30));
-            y += P(56);
+            if (narrow) { y += P(46); tglPreviews.SetBounds(x, y, P(230), P(30)); y += P(44); }
+            else { tglPreviews.SetBounds(x + w - P(230), y + P(4), P(230), P(30)); y += P(56); }
 
             secTools.Location = new Point(x, y);
             y += P(24);
@@ -290,9 +302,9 @@ namespace BrokenHub
             lblFoot.MaximumSize = new Size(w, 0);
             lblFoot.AutoSize = true;
             lblFoot.Location = new Point(x, y);
-            page.AutoScrollMinSize = new Size(0, y + lblFoot.Height + pad + page.VerticalScroll.Value);
-            page.Invalidate();
+            return y + lblFoot.Height - y0;
         }
+
 
         // ------------------------------------------------------------------ Durum
         void UpdateUi()
