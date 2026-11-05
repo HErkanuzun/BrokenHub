@@ -65,6 +65,9 @@ namespace BrokenHub
             l.Add(Make("space", "Broken Space Finder", "BrokenSpaceFinder", "{9F55E652-A631-470B-8E88-F40B25CCECA9}", false,
                 "Diski neyin doldurduğunu bulur: büyük klasörler, şişen önbellekler, unutulan veriler. Sonra güvenle temizler.",
                 "Finds what's filling your disk: big folders, bloated caches, forgotten data. Then cleans it up safely."));
+            l.Add(Make("mic", "Broken Microphone", "BrokenMicrophone", "{D6B999DB-A641-4367-B9DC-C99509B6AC90}", true,
+                "Telefonunu, tabletini ya da onlara bağlı kablosuz kulaklığı Wi-Fi üzerinden bilgisayarın mikrofonu yapar. Telefona uygulama gerekmez.",
+                "Turns your phone, tablet or the wireless headset connected to them into the computer's microphone over Wi-Fi. No app needed on the phone."));
             return l;
         }
 

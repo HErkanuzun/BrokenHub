@@ -18,11 +18,12 @@ Windows'ta bozuk ya da sorunlu bir şeyi bulup onunla yaşamanı sağlayan küç
 | [Broken Screen Resizer](https://github.com/HErkanuzun/BrokenScreenResizer) | Monitörün bozuk kısmını Windows'un dışında bırakır. |
 | [Broken Disk Resizer](https://github.com/HErkanuzun/BrokenDiskResizer) | Hard diskin bozuk sektörlerini bulur, sadece sağlam kısımları bölümler. |
 | [Broken Space Finder](https://github.com/HErkanuzun/BrokenSpaceFinder) | Diski neyin doldurduğunu bulur ve güvenle temizler. |
+| [Broken Microphone](https://github.com/HErkanuzun/BrokenMicrophone) | Telefonu ya da tableti bilgisayarın mikrofonu yapar. |
 | **Broken Hub** | Hepsini tek yerden kurar, günceller ve açar. |
 
 ## Kurulum
 
-1. [Son sürümden](https://github.com/HErkanuzun/BrokenHub/releases/latest) `BrokenHub-1.0-Setup.exe`'yi indir ve çalıştır. Yönetici izni istemez.
+1. [Son sürümden](https://github.com/HErkanuzun/BrokenHub/releases/latest) `BrokenHub-1.1-Setup.exe`'yi indir ve çalıştır. Yönetici izni istemez.
 2. Başlat menüsünden **Broken Hub**'ı aç.
 
 Kurulum istemiyorsan `Portable.zip`'i aç, içindeki exe'yi çalıştır.
@@ -60,11 +61,11 @@ Yeni bir araç eklemek için `src\Catalog.cs`'teki listeye bir satır ve `src\to
 
 **Broken Hub** shows every Broken tool in one window: which ones are installed and which have a new version. One click downloads, verifies and installs.
 
-**Install:** download `BrokenHub-1.0-Setup.exe` from the [latest release](https://github.com/HErkanuzun/BrokenHub/releases/latest) (or use the portable ZIP). It doesn't need administrator rights.
+**Install:** download `BrokenHub-1.1-Setup.exe` from the [latest release](https://github.com/HErkanuzun/BrokenHub/releases/latest) (or use the portable ZIP). It doesn't need administrator rights.
 
 **How it works:** the installed version comes from each tool's Windows "Apps" entry; the latest version from its GitHub releases (turn on *Preview versions* to include previews). *Install/Update* downloads the setup to `%Temp%\BrokenHub`, checks its SHA-256 against the release's `SHA256SUMS.txt` (a mismatch deletes the file and installs nothing), runs it silently and deletes it afterwards. *Update all* installs every available update in turn. *Uninstall* runs the tool's own uninstaller. Windows asks for administrator rights only for the tools whose setup needs them.
 
-**The Broken family:** [Broken Screen Resizer](https://github.com/HErkanuzun/BrokenScreenResizer) · [Broken Disk Resizer](https://github.com/HErkanuzun/BrokenDiskResizer) · [Broken Space Finder](https://github.com/HErkanuzun/BrokenSpaceFinder) · **Broken Hub**.
+**The Broken family:** [Broken Screen Resizer](https://github.com/HErkanuzun/BrokenScreenResizer) · [Broken Disk Resizer](https://github.com/HErkanuzun/BrokenDiskResizer) · [Broken Space Finder](https://github.com/HErkanuzun/BrokenSpaceFinder) · [Broken Microphone](https://github.com/HErkanuzun/BrokenMicrophone) · **Broken Hub**.
 
 ![Broken Hub](docs/images/screenshot-en.png)
 

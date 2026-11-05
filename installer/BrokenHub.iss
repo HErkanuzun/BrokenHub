@@ -54,8 +54,6 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [CustomMessages]
 turkish.DeleteData=Ayarlar da silinsin mi?%n%n(%1)
 english.DeleteData=Also delete the settings?%n%n(%1)
-turkish.Warning=Kalıcı silinen şeyler geri getirilemez. Emin olmadığın bir şeyi silmeden önce "Explorer'da göster" ile içine bak.
-english.Warning=Things deleted permanently can't be restored. Before deleting something you're not sure about, use "Show in Explorer" to look inside.
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -86,12 +84,6 @@ begin
   ExtractTemporaryFile('{#AppExe}');
   Exec(ExpandConstant('{tmp}\{#AppExe}'), '--exit', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   Result := '';
-end;
-
-procedure CurPageChanged(CurPageID: Integer);
-begin
-  if CurPageID = wpFinished then
-    WizardForm.FinishedLabel.Caption := WizardForm.FinishedLabel.Caption + #13#10#13#10 + CustomMessage('Warning');
 end;
 
 // Kaldırma bitince kullanıcı verisi sorulur (sessiz kaldırmada dokunulmaz)
