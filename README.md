@@ -68,4 +68,6 @@ Yeni bir araç eklemek için `src\Catalog.cs`'teki listeye bir satır ve `src\to
 
 ![Broken Hub](docs/images/screenshot-en.png)
 
+**[Code signing policy](SECURITY.md#code-signing-policy)** · Free code signing by SignPath Foundation · Kod imzalama politikası
+
 MIT License.
