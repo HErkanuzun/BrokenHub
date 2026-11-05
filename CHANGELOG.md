@@ -2,6 +2,14 @@
 
 All notable changes to Broken Hub. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1] - 2026-11-06
+
+### Added
+- Broken Microphone: use a phone or tablet as the computer's microphone.
+
+### Fixed
+- The setup's last page showed an unrelated warning about deleting files.
+
 ## [1.0] - 2026-11-05
 
 First release.
@@ -12,3 +20,4 @@ First release.
 - **Open**, **Uninstall** (the tool's own uninstaller) and **GitHub** for each tool.
 - **Preview versions** toggle to include pre-releases.
 - Taskbar progress while downloading, Turkish and English, dark theme, one running copy, installer and portable ZIP — same as the rest of the Broken family.
+[1.1]: https://github.com/HErkanuzun/BrokenHub/releases/tag/v1.1
