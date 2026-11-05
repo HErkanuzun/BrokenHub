@@ -43,6 +43,7 @@ namespace BrokenHub
             page.AutoScroll = true;
             page.Resize += delegate { DoLayout(); };
             Controls.Add(page);
+            BrokenUi.GlassScroll.Attach(page, Theme.Bg, Theme.Accent);   // beyaz Windows çubuğu yerine koyu cam çubuk
 
             BuildUi();
             InitialSize();
