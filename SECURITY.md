@@ -35,3 +35,25 @@ Release files are built from this repository by GitHub Actions. Each release inc
 ```powershell
 Get-FileHash .\BrokenHub-1.0-Setup.exe -Algorithm SHA256
 ```
+
+<a id="code-signing-policy"></a>
+## Code signing policy · Kod imzalama politikası
+
+Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+
+Ücretsiz kod imzalama hizmetini [SignPath.io](https://about.signpath.io) sağlar, sertifika [SignPath Foundation](https://signpath.org)'a aittir.
+
+| Role · Görev | Members · Kişiler |
+|---|---|
+| Committers and reviewers · Geliştirenler ve inceleyenler | [HErkanuzun](https://github.com/HErkanuzun) |
+| Approvers · İmzayı onaylayanlar | [HErkanuzun](https://github.com/HErkanuzun) |
+
+Only files built by GitHub Actions from this repository are signed: the program and its setup in each release. Every signing request is approved by hand. Changes from people outside the team are reviewed before they are merged.
+
+Sadece bu depodan GitHub Actions ile derlenen dosyalar imzalanır: her sürümdeki program ve kurulum paketi. Her imza isteği elle onaylanır. Ekip dışından gelen değişiklikler birleştirilmeden önce incelenir.
+
+### Privacy · Gizlilik
+
+Broken Hub connects only to GitHub (`api.github.com` and `github.com`) to look up the latest versions of the Broken tools and, when you press Install or Update, to download their setups. It sends no personal data and collects no telemetry. These requests are covered by [GitHub's privacy statement](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement). The other Broken tools do not connect to the internet at all.
+
+Broken Hub sadece GitHub'a bağlanır: araçların son sürümlerini öğrenmek ve Kur ya da Güncelle'ye bastığında kurulum dosyalarını indirmek için. Kişisel veri göndermez, kullanım verisi toplamaz. Bu istekler için [GitHub'ın gizlilik bildirimi](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement) geçerlidir.
