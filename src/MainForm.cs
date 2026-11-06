@@ -7,8 +7,14 @@ using System.Windows.Forms;
 
 namespace BrokenHub
 {
-    class MainForm : Form
+    class MainForm : Form, ISurface
     {
+        readonly TitleBar titleBar = new TitleBar();
+        protected override void WndProc(ref Message m) { if (!Frame.Handle(this, ref m, titleBar.Height)) base.WndProc(ref m); }
+        public void PaintSurface(Graphics g, Rectangle r) { Glass.Backdrop(g, ClientSize, Point.Empty, r); }
+        protected override void OnPaintBackground(PaintEventArgs e) { PaintSurface(e.Graphics, e.ClipRectangle); }
+        protected override void OnResize(EventArgs e) { base.OnResize(e); Invalidate(true); }
+        protected override void OnDeactivate(EventArgs e) { base.OnDeactivate(e); titleBar.Invalidate(); }
         readonly Settings cfg;
         readonly BufferedPanel page = new BufferedPanel();
         readonly System.Windows.Forms.Timer tick = new System.Windows.Forms.Timer();
@@ -44,6 +50,9 @@ namespace BrokenHub
             page.Resize += delegate { DoLayout(); };
             Controls.Add(page);
             BrokenUi.GlassScroll.Attach(page, Theme.Bg, Theme.Accent);   // beyaz Windows çubuğu yerine koyu cam çubuk
+            BrokenUi.GlassScroll.Under = Glass.PaintUnder;
+            titleBar.Dock = DockStyle.Top;
+            Controls.Add(titleBar);
 
             BuildUi();
             InitialSize();
@@ -55,7 +64,7 @@ namespace BrokenHub
 
         static int P(float v) { return Theme.P(v); }
 
-        protected override void OnHandleCreated(EventArgs e) { base.OnHandleCreated(e); Theme.DarkTitle(this); }
+        protected override void OnHandleCreated(EventArgs e) { base.OnHandleCreated(e); Frame.Apply(this); }
 
         protected override void OnShown(EventArgs e)
         {
@@ -66,6 +75,7 @@ namespace BrokenHub
         // Başka bir araçtan dönünce (ör. kaldırma sonrası) kurulu sürümler tazelenir; GitHub'a en fazla 5 dakikada bir sorulur
         protected override void OnActivated(EventArgs e)
         {
+            titleBar.Invalidate();
             base.OnActivated(e);
             if (!AnyBusy && !refreshing && lastRefresh != DateTime.MinValue)
             {
@@ -168,7 +178,7 @@ namespace BrokenHub
 
             logo = new PictureBox();
             logo.SizeMode = PictureBoxSizeMode.Zoom;
-            logo.BackColor = Theme.Bg;
+            logo.BackColor = Color.Transparent;
             logo.Image = Theme.Logo();
             page.Controls.Add(logo);
 
@@ -216,7 +226,7 @@ namespace BrokenHub
             secTools = new Label();
             secTools.Text = L.Upper(L.T("Araçlar", "Tools"));
             secTools.ForeColor = Theme.Sub;
-            secTools.BackColor = Theme.Bg;
+            secTools.BackColor = Color.Transparent;
             secTools.AutoSize = true;
             page.Controls.Add(secTools);
             secTools.Font = new Font(Font.FontFamily, 8f, FontStyle.Bold);
@@ -237,7 +247,7 @@ namespace BrokenHub
             lblFoot.Text = L.T("Kurulum paketleri GitHub sürümlerinden indirilir ve SHA-256 özetleriyle doğrulanır. Broken Hub kendisi yönetici izni istemez; izin isteyen araçlar için Windows sorar.",
                                "Setups are downloaded from the GitHub releases and checked against their SHA-256 sums. Broken Hub itself doesn't need administrator rights; Windows asks for the tools that do.");
             lblFoot.ForeColor = Theme.Sub;
-            lblFoot.BackColor = Theme.Bg;
+            lblFoot.BackColor = Color.Transparent;
             lblFoot.Font = new Font(Font.FontFamily, 8.5f);
             page.Controls.Add(lblFoot);
 
@@ -541,7 +551,6 @@ namespace BrokenHub
         FlatButton Child(FlatButton b)
         {
             b.Font = Font;
-            b.BackColor = Theme.Card;
             Controls.Add(b);
             return b;
         }
@@ -609,12 +618,10 @@ namespace BrokenHub
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            var g = Theme.Prep(e, Theme.Bg);
+            var g = Theme.Prep(e, this);
             var t = Tool;
             var r = new RectangleF(0.5f, 0.5f, Width - 1.5f, Height - 1.5f);
-            Color edge = t.HasUpdate ? Theme.Mix(Theme.Border, Theme.Warn, 0.45f) : Theme.Border;
-            Theme.Fill(g, r, P(12), Theme.Card);
-            Theme.Stroke(g, r, P(12), edge, 1);
+            Glass.Card(g, r, P(12), t.HasUpdate ? Theme.Warn : Color.Empty);
 
             int lx = P(20), ls = P(64);
             if (logo != null)
