@@ -10,7 +10,8 @@ namespace BrokenHub
     class MainForm : Form, ISurface
     {
         readonly TitleBar titleBar = new TitleBar();
-        protected override void WndProc(ref Message m) { if (!Frame.Handle(this, ref m, titleBar.Height)) base.WndProc(ref m); }
+        readonly AppHeader header = new AppHeader();
+        protected override void WndProc(ref Message m) { if (!Frame.Handle(this, ref m, titleBar.Height + header.Height)) base.WndProc(ref m); }
         public void PaintSurface(Graphics g, Rectangle r) { Glass.Backdrop(g, ClientSize, Point.Empty, r); }
         protected override void OnPaintBackground(PaintEventArgs e) { PaintSurface(e.Graphics, e.ClipRectangle); }
         protected override void OnResize(EventArgs e) { base.OnResize(e); Invalidate(true); }
@@ -51,6 +52,9 @@ namespace BrokenHub
             Controls.Add(page);
             BrokenUi.GlassScroll.Attach(page, Theme.Bg, Theme.Accent);   // beyaz Windows çubuğu yerine koyu cam çubuk
             BrokenUi.GlassScroll.Under = Glass.PaintUnder;
+            header.Dock = DockStyle.Top;
+            Controls.Add(header);
+            titleBar.ShowTitle = false;
             titleBar.Dock = DockStyle.Top;
             Controls.Add(titleBar);
 
@@ -268,6 +272,20 @@ namespace BrokenHub
         }
 
         // Duyarlı düzen: içerik en fazla P(980) genişlikte ve ortada; pencere içerikten uzunsa dikeyde de ortalanır.
+        // logo, ad ve dil/Hakkında düğmeleri sabit başlıkta (sayfayla birlikte oynamaz)
+        void SetupHeader()
+        {
+            header.Logo = logo.Image;
+            header.Title = lblTitle.Text;
+            header.Subtitle = lblSub.Text;
+            header.Font = Font;
+            logo.Visible = lblTitle.Visible = lblSub.Visible = false;
+            header.ClearActions();
+            header.AddAction(btnAbout, P(90));
+            header.AddAction(segLang, P(96));
+            header.Invalidate();
+        }
+
         void DoLayout()
         {
             if (lblFoot == null) return;
@@ -277,7 +295,7 @@ namespace BrokenHub
             int x = (W - w) / 2;
             int height = Place(x, 0, w);
             bool fits = height + pad * 2 <= H;
-            Place(x, fits ? (H - height) / 2 : pad - page.VerticalScroll.Value, w);
+            Place(x, pad - page.VerticalScroll.Value, w);   // hep üstten başlar: sayfa değişince bir şey kaymaz
             page.AutoScrollMinSize = fits ? Size.Empty : new Size(0, height + pad * 2);
             page.Invalidate();
         }
@@ -285,14 +303,8 @@ namespace BrokenHub
         int Place(int x, int y0, int w)
         {
             int y = y0;
+            if (segLang.Parent != header) SetupHeader();
             bool narrow = w < P(600);
-            logo.SetBounds(x, y, P(48), P(48));
-            lblTitle.Location = new Point(x + P(62), y - P(1));
-            lblSub.Location = new Point(x + P(64), y + P(30));
-            int by = narrow ? y + P(62) : y + P(6);
-            btnAbout.SetBounds(x + w - P(90), by, P(90), P(32));
-            segLang.SetBounds(x + w - P(90) - P(8) - P(96), by, P(96), P(32));
-            y = narrow ? by + P(48) : y + P(70);
 
             info.SetBounds(x, y, w, info.Measure(w));
             y = info.Bottom + P(12);
